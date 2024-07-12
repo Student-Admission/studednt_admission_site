@@ -1,168 +1,168 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { info } from 'autoprefixer';
+import React from 'react'
+import { useState } from 'react';
+const Parents_details = () => {
 
-export default function family_details() {
+    const [inputs, setInputs] = useState({
+		father_name: "",
+		mother_name: "",
+		father_occupation: "",
+        mother_occupation:"",
+		father_number:"",
+        mother_number:"",
+       
+	});
+
+    const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log(inputs);
+	};
+
+
   return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-        />
-        <TextField
-          disabled
-          id="outlined-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <TextField
-          id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          id="filled-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-search"
-          label="Search field"
-          type="search"
-          variant="filled"
-        />
-        <TextField
-          id="filled-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="filled"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="standard-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          disabled
-          id="standard-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          id="standard-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="standard"
-        />
-        <TextField
-          id="standard-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-search"
-          label="Search field"
-          type="search"
-          variant="standard"
-        />
-        <TextField
-          id="standard-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="standard"
-        />
-      </div>
-    </Box>
-  );
+    <form onSubmit={handleSubmit}>
+    <h2 className="text-base font-semibold leading-7 text-gray-900">Parents Details</h2>
+    <div className="border-b border-gray-900/10 pb-12 pl-60 " >
+        
+       
+
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="sm:col-span-3">
+                <label htmlFor="father_name" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                    Father's Name
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                        name="father_name"
+                        id="father_name"
+                        autoComplete="off"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '80%' }}
+                        value={inputs.father_name}
+                        onChange={(e) => setInputs({ ...inputs,father_name: e.target.value })}
+                    />
+                </div>
+            </div>
+
+            <div className="sm:col-span-3">
+                <label htmlFor="father_occupation" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                    Father's Occupation
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                        name="father_occupation"
+                        id="father_occupation"
+                        autoComplete="off"
+                        className="block w-1/3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '50%' }}
+                        value={inputs.father_occupation}
+                        onChange={(e) => setInputs({ ...inputs, father_occupation: e.target.value })}
+                    />
+                </div>
+            </div>
+
+
+
+
+
+            <div className="sm:col-span-3">
+                <label htmlFor="mother_name" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                    Mother's Name
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                        name="mother_name"
+                          id="mother_name"
+                        autoComplete="off"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '80%' }}
+                        value={inputs.mother_name}
+                        onChange={(e) => setInputs({ ...inputs, mother_name: e.target.value })}
+                    />
+                </div>
+            </div>
+
+            <div className="sm:col-span-3">
+                <label htmlFor="mother_occupation" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                    Mother's Occupation
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                      name="mother_occupation"
+                        id="mother_occupation"
+                        autoComplete="off"
+                        className="block w-1/3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '50%' }}
+                        value={inputs.mother_occupation}
+                        onChange={(e) => setInputs({ ...inputs, mother_occupation: e.target.value })}
+                    />
+                </div>
+            </div>
+
+
+            
+
+            <div className="sm:col-span-full">
+                <label htmlFor="father_number" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                  Father's Mobile Number
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                      name="father_number"
+                        id="father_number"
+                        autoComplete="off"
+                        className="block w-1/7 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '39%' }}
+                        value={inputs.father_number}
+                        onChange={(e) => setInputs({ ...inputs,father_number: e.target.value })}
+                    />
+                </div>
+            </div>
+
+
+
+
+            <div className="sm:col-span-full">
+                <label htmlFor="mother_number" className="block text-sm font-medium leading-6 text-gray-900 text-left">
+                        Mother's Mobile Number
+                </label>
+                <div className="mt-2">
+                    <input
+                        type="text"
+                      name="mother_number"
+                        id="mother_number"
+                        autoComplete="off"
+                        className="block w-1/7 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        style={{ width: '39%' }}
+                        value={inputs.mother_number}
+                        onChange={(e) => setInputs({ ...inputs,mother_number: e.target.value })}
+                    />
+                </div>
+            </div>
+
+
+
+            
+
+            
+
+           
+
+            
+
+            
+        </div>
+    </div>
+                    <div>
+ 						<button className='btn btn-block btn-sm mt-2  border border-slate-700 ' style={{ width: '32%' }}>Submit & Next</button>
+ 					</div>
+</form>
+  )
 }
+
+export default Parents_details
