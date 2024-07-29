@@ -13,7 +13,7 @@ import FamilyDetails from './component/family_details.jsx';
 const steps = [
   {
     label: 'Add personal details',
-    description: `Write each detail carefully`,
+    description: 'Write each detail carefully',
     component: <PersonalDetails />,
   },
   {
@@ -23,17 +23,17 @@ const steps = [
   },
   {
     label: 'Add family details',
-    description: `Write each detail carefully`,
+    description: 'Write each detail carefully',
     component: <FamilyDetails />,
   },
   {
     label: 'Jee Mains Score',
-    description: `Add Genuine Jee Mains Score`,
+    description: 'Add Genuine Jee Mains Score',
     component: null, // No component for this step
   },
   {
     label: 'Upload Documents',
-    description: `Add correct documents`,
+    description: 'Add correct documents',
     component: null, // No component for this step
   },
 ];
@@ -54,8 +54,8 @@ export default function VerticalLinearStepper() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: 800 , mt:8}}>
-      <Box>
+    <Box sx={{ display: 'flex', justifyContent: 'center', maxWidth: '100%', mt: 8, px: 3 }}>
+      <Box sx={{ width: '100%', maxWidth: 300 }}>
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label}>
@@ -95,14 +95,14 @@ export default function VerticalLinearStepper() {
         </Stepper>
         {activeStep === steps.length && (
           <Box mt={2}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Typography>All steps completed - you're finished</Typography>
             <Button onClick={handleReset} sx={{ mt: 1, mr: 2 }}>
               Reset
             </Button>
           </Box>
         )}
       </Box>
-      <Box ml = {20} >
+      <Box sx={{ ml: 3, flexGrow: 1 }}>
         {steps[activeStep].component}
       </Box>
     </Box>
