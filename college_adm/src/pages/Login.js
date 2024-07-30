@@ -1,22 +1,23 @@
-import React from 'react';
 import { Form, Input, message } from 'antd';
-import '../styles/RegisterStyle.css';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { showLoading, hideLoading } from '../redux/features/alertSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { hideLoading, showLoading } from '../redux/features/alertSlice';
+import '../styles/RegisterStyle.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const onFinishHandler = async (values) => {
     try {
       dispatch(showLoading());
-      console.log('Received values of form:', values);
       const res = await axios.post('http://localhost:5001/api/v1/auth/login', values);
       dispatch(hideLoading());
       if (res.data.success) {
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userId', res.data.user.id);
         message.success(res.data.message || 'Login Successfully');
         navigate('/');
       } else {
@@ -24,7 +25,6 @@ const Login = () => {
       }
     } catch (error) {
       dispatch(hideLoading());
-      console.log(error);
       message.error('Failed to login');
     }
   };
@@ -55,13 +55,13 @@ const Login = () => {
         </Form.Item>
 
         <div className="flex items-center justify-between">
-                    <Link to="/register" className="text-blue-500 mr-28">
-                        Not a user? Register here
-                    </Link>
-                    <button className="btn btn-primary mr-60" type="submit">
-                        Login
-                    </button>
-         </div>
+          <Link to="/register" className="text-blue-500 mr-28">
+            Not a user? Register here
+          </Link>
+          <button className="btn btn-primary mr-60" type="submit">
+            Login
+          </button>
+        </div>
       </Form>
     </div>
   );

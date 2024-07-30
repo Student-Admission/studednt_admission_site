@@ -1,7 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
-
-const Academic_details = () => {
+import axios from 'axios';
+import React, { useState } from 'react';
+const Academic_details = ({ handleNext }) => {
     const [inputs, setInputs] = useState({
         application_no_1: "",
         application_no_2: "",
@@ -15,8 +14,22 @@ const Academic_details = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs);
-    };
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        try {
+          await axios.post('http://localhost:5001/api/v1/data/edu_details',  { ...inputs, userId },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+          handleNext(); // Navigate to the next step
+        } catch (error) {
+          console.error('There was an error!', error);
+        }
+      };
 
     return (
         <form onSubmit={handleSubmit}>

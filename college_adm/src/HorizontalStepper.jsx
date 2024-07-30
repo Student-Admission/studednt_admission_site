@@ -1,35 +1,36 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
+import Step from '@mui/material/Step';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
-import PersonalDetails from './component/personal_details.jsx';
+import * as React from 'react';
 import EduDetails from './component/edu_details.jsx';
 import FamilyDetails from './component/family_details.jsx';
+import PersonalDetails from './component/personal_details.jsx';
+import Preferences from './component/preferences.jsx';
 
 const steps = [
   {
     label: 'Add personal details',
     description: 'Write each detail carefully',
-    component: <PersonalDetails />,
+    component: (handleNext) => <PersonalDetails handleNext={handleNext} />,
   },
   {
     label: 'Add education details',
-    description: 'Write each detail carefully',
-    component: <EduDetails />,
+    description: 'Write each detail carefully add',
+    component: (handleNext) => <EduDetails handleNext={handleNext} />,
   },
   {
     label: 'Add family details',
     description: 'Write each detail carefully',
-    component: <FamilyDetails />,
+    component: (handleNext) => <FamilyDetails handleNext={handleNext} />,
   },
   {
-    label: 'Jee Mains Score',
-    description: 'Add Genuine Jee Mains Score',
-    component: null, // No component for this step
+    label: 'Add your Preferences',
+    description: 'Carefully add the preferences of branch',
+    component: (handleNext) => <Preferences handleNext={handleNext} />,
   },
   {
     label: 'Upload Documents',
@@ -103,7 +104,7 @@ export default function VerticalLinearStepper() {
         )}
       </Box>
       <Box sx={{ ml: 3, flexGrow: 1 }}>
-        {steps[activeStep].component}
+        {steps[activeStep].component(handleNext)}
       </Box>
     </Box>
   );

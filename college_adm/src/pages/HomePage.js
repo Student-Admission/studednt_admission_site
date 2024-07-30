@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -7,15 +7,16 @@ const HomePage = () => {
 
   const getUser = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         'http://localhost:5001/api/v1/auth/getUserData',
         {},
         {
           headers: {
-            'Authorization': "Bearer" + localStorage.getItem('token'),
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         }
       );
+      console.log(response.data);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch user data');

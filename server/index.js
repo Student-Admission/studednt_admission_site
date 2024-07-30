@@ -6,6 +6,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const connectDB = require("./config/db.js");
 const authroutes = require("./routers/user.js")
+const dataroutes = require("./routers/data.js")
 // Load environment variables from .env file
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cors());
 
 // Routes
 app.use("/api/v1/auth", authroutes);
+app.use("/api/v1/data", dataroutes);
 
 const port = process.env.PORT || 8000;
 

@@ -1,6 +1,6 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-
-const Parents_details = () => {
+const Parents_details = ({ handleNext }) => {
     const [inputs, setInputs] = useState({
         father_name: "",
         mother_name: "",
@@ -10,11 +10,24 @@ const Parents_details = () => {
         mother_number: "",
     });
 
+  
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs);
-    };
-
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        try {
+          await axios.post('http://localhost:5001/api/v1/data/family_details', { ...inputs, userId },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+          handleNext(); // Navigate to the next step
+        } catch (error) {
+          console.error('There was an error!', error);
+        }
+      };
     return (
         <form onSubmit={handleSubmit}>
             <h2 className="text-base font-semibold leading-7 text-gray-900">Parents Details</h2>
