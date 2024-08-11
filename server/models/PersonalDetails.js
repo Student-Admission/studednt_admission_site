@@ -9,7 +9,8 @@ const PersonalDetailsSchema = new mongoose.Schema({
     address: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
-    postal_code: { type: String, required: true }
+    postal_code: { type: String, required: true },
+    allotted_branch: { type: String, default: null }
 });
 
 module.exports = mongoose.model('PersonalDetails', PersonalDetailsSchema);

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-const Preferences = ({ handleNext }) => {
+import { useNavigate } from 'react-router-dom';
+const Preferences = () => {
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         preference_1: "",
         preference_2: "",
@@ -9,6 +11,7 @@ const Preferences = ({ handleNext }) => {
     });
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
@@ -20,7 +23,9 @@ const Preferences = ({ handleNext }) => {
               }
             }
           );
-        } catch (error) {
+          navigate('/allocated_branch');
+        } 
+        catch (error) {
           console.error('There was an error!', error);
         }
       };

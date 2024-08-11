@@ -6,6 +6,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import EduDetails from './component/edu_details.jsx';
 import FamilyDetails from './component/family_details.jsx';
 import PersonalDetails from './component/personal_details.jsx';
@@ -32,18 +33,19 @@ const steps = [
     description: 'Carefully add the preferences of branch',
     component: (handleNext) => <Preferences handleNext={handleNext} />,
   },
-  {
-    label: 'Upload Documents',
-    description: 'Add correct documents',
-    component: null, // No component for this step
-  },
 ];
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const navigate = useNavigate(); // Hook to navigate to different routes
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      // If the last step is reached, navigate to /allocated_branch
+      navigate('/allocated_branch');
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -62,7 +64,7 @@ export default function VerticalLinearStepper() {
             <Step key={step.label}>
               <StepLabel
                 optional={
-                  index === 2 ? (
+                  index === steps.length - 1 ? (
                     <Typography variant="caption">Last step</Typography>
                   ) : null
                 }
@@ -77,7 +79,6 @@ export default function VerticalLinearStepper() {
                       variant="contained"
                       onClick={handleNext}
                       sx={{ mt: 1, mr: 2 }}
-                      disabled={activeStep === steps.length - 1}
                     >
                       {activeStep === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
