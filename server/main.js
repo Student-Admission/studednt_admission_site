@@ -51,11 +51,12 @@ function assignBranches() {
     studentsCache.forEach(student => {
         for (let i = 1; i <= 4; ++i) {
             let preference = student[`preference_${i}`];
-
+            console.log(`Assigning branch for student ${student.userId} preference ${preference}`);
+            console.log("\n");
             // Skip to the next student if the current preference is an empty string
             if (!preference) break;
 
-            if (student.allotted_preference === 0 || i < student.allotted_preference) {
+            // if (student.allotted_preference === 0 || i < student.allotted_preference) {
                 if (available_seats[preference] > 0) {
                     if (student.allotted_branch) {
                         available_seats[student.allotted_branch]++;
@@ -63,9 +64,11 @@ function assignBranches() {
 
                     student.allotted_preference = i;
                     student.allotted_branch = preference;
+                    console.log(student.allotted_branch);
+                    console.log("\n");
                     available_seats[preference]--;
                     break; // Stop further processing once a branch is assigned
-                }
+                // }
             }
         }
     });
@@ -75,7 +78,7 @@ async function updateStudents() {
     for (let student of studentsCache) {
         await PersonalDetails.updateOne({ userId: student.userId }, {
             allotted_preference: student.allotted_preference,
-            alloted_branch: student.allotted_branch
+            allotted_branch: student.allotted_branch
         });
     }
 }
