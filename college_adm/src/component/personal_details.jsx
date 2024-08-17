@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const Personal_details = ({ handleNext }) => {
+const Personal_details = ({ handleNext, setStepCompletion }) => {
   const [inputs, setInputs] = useState({
     first_name: "",
     last_name: "",
@@ -12,6 +12,11 @@ const Personal_details = ({ handleNext }) => {
     state: "",
     postal_code: "",
   });
+
+  useEffect(() => {
+    const allFieldsFilled = Object.values(inputs).every(value => value.trim() !== "");
+    setStepCompletion(allFieldsFilled);
+  }, [inputs, setStepCompletion]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,34 +1,36 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-const Preferences = () => {
-    const navigate = useNavigate();
-    const [inputs, setInputs] = useState({
-        preference_1: "",
-        preference_2: "",
-        preference_3: "",
-        preference_4: "",
-    });
+import React, { useEffect, useState } from 'react';
 
-    const handleSubmit = async (e) => {
+const Preferences = ({ handleNext, setStepCompletion }) => {
+  const [inputs, setInputs] = useState({
+    preference_1: "",
+    preference_2: "",
+    preference_3: "",
+    preference_4: ""
+  });
 
-        e.preventDefault();
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        try {
-          await axios.post('http://localhost:5001/api/v1/data/preferences',{ ...inputs, userId },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
-          navigate('/allocated_branch');
-        } 
-        catch (error) {
-          console.error('There was an error!', error);
+  useEffect(() => {
+    const allFieldsFilled = Object.values(inputs).every(value => value.trim() !== "");
+    setStepCompletion(allFieldsFilled);
+  }, [inputs, setStepCompletion]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    try {
+      await axios.post('http://localhost:5001/api/v1/data/edu_details', { ...inputs, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      };
+      );
+      handleNext();
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -118,14 +120,11 @@ const Preferences = () => {
                             <option>MECH</option>
                         </select>
                     </div>
-
                 </div>
             </div>
-            <div className="flex justify-center mt-6 mb-8">
-                <button className="btn btn-block btn-sm border border-slate-700" style={{ width: '32%' }}>Submit & Next</button>
-            </div>
+            <button type="submit" className="btn btn-outline btn-accent mt-[25px]">Save & Next</button>
         </form>
     );
-}
+};
 
 export default Preferences;

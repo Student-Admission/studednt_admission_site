@@ -7,13 +7,14 @@ const AllocatedBranch = () => {
 
   useEffect(() => {
     const fetchPersonalDetails = async () => {
+      const userId = localStorage.getItem('userId');
       try {
-        const response = await fetch('http://localhost:5001/api/v1/data/personal_details_get');
+        const response = await fetch(`http://localhost:5001/api/v1/data/personal_details_get/${userId}`);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Either You have not filled all the details or their is a Network response was not ok');
         }
         const data = await response.json();
-        setPersonalDetails(data[0]); // Assuming the API returns an array with user details
+        setPersonalDetails(data); // Assuming the API returns a single user detail object
       } catch (error) {
         setError(error);
         console.error('Error fetching personal details:', error);
@@ -36,6 +37,7 @@ const AllocatedBranch = () => {
   if (!personalDetails) {
     return <div>No personal details found</div>;
   }
+
 
   return (
     <div className="max-w-4xl mx-auto mt-8">

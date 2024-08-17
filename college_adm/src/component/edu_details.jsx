@@ -1,36 +1,41 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-const Academic_details = ({ handleNext }) => {
-    const [inputs, setInputs] = useState({
-        application_no_1: "",
-        application_no_2: "",
-        rank_1: "",
-        rank_2: "",
-        application_no_adv: "",
-        rank_adv: "",
-        percentage_12: "",
-        percentage_10: ""
-    });
+import React, { useEffect, useState } from 'react';
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
+const Academic_details = ({ handleNext, setStepCompletion }) => {
+  const [inputs, setInputs] = useState({
+    application_no_1: "",
+    application_no_2: "",
+    rank_1: "",
+    rank_2: "",
+    application_no_adv: "",
+    rank_adv: "",
+    percentage_12: "",
+    percentage_10: ""
+  });
 
-        try {
-          await axios.post('http://localhost:5001/api/v1/data/edu_details',  { ...inputs, userId },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
-          handleNext(); // Navigate to the next step
-        } catch (error) {
-          console.error('There was an error!', error);
+  useEffect(() => {
+    const allFieldsFilled = Object.values(inputs).every(value => value.trim() !== "");
+    setStepCompletion(allFieldsFilled);
+  }, [inputs, setStepCompletion]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    try {
+      await axios.post('http://localhost:5001/api/v1/data/edu_details', { ...inputs, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      };
-
+      );
+      handleNext(); // Navigate to the next step
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
     return (
         <form onSubmit={handleSubmit}>
             <h2 className="text-base font-semibold leading-7 text-gray-900">Academic Details</h2>

@@ -11,6 +11,11 @@ const eduDetailsSchema = new Schema({
     rank_adv: String,
     percentage_12: String,
     percentage_10: String,
+    
+    preference_1: String,
+    preference_2: String,
+    preference_3: String,
+    preference_4: String,
 }, { timestamps: true });
 
 module.exports = mongoose.model('EduDetails', eduDetailsSchema);

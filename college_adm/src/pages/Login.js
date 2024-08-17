@@ -17,7 +17,7 @@ const Login = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userId', res.data.user.id);
+        localStorage.setItem('userId', res.data.user._id);
         message.success(res.data.message || 'Login Successfully');
         navigate('/');
       } else {

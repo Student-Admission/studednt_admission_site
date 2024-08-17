@@ -2,7 +2,6 @@
 const PersonalDetails = require('../models/PersonalDetails.js');
 const FamilyDetails = require('../models/FamilyDetails');
 const EduDetails = require('../models/EduDetails');
-const Preferences = require('../models/Preferences');
 
 
 const createPersonalDetails = async (req, res) => {
@@ -38,11 +37,15 @@ const createPersonalDetails = async (req, res) => {
 
 
 const getAllPersonalDetails = async (req, res) => {
+    const { userId } = req.params;
     try {
-        const personalDetails = await PersonalDetails.find();
-        res.status(200).json(personalDetails);
+      const personalDetails = await PersonalDetails.findOne({ userId });
+      if (!personalDetails) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(personalDetails);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+      res.status(500).json({ error: err.message });
     }
 };
 
@@ -90,39 +93,25 @@ const createFamilyDetails = async (req, res) => {
     }
 };
 
-// Edu Details
-const createEduDetails = async (req, res) => {
+const updateEduDetails = async (req, res) => {
     try {
-        const eduDetails = new EduDetails({
-            ...req.body,
-           
-        });
-        await eduDetails.save();
-        res.status(201).send(eduDetails);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-};
-
-// Preferences
-const createPreferences = async (req, res) => {
-    try {
-        const preferences = new Preferences({
-            ...req.body,
-        });
-        await preferences.save();
-        res.status(201).send(preferences);
+        const { userId } = req.body;
+        const eduDetails = await EduDetails.findOneAndUpdate(
+            { userId },
+            { $set: req.body },
+            { new: true, upsert: true }
+        );
+        res.status(200).send(eduDetails);
     } catch (error) {
         res.status(400).send(error);
     }
 };
 
 module.exports = {
+    updateEduDetails,
     createFamilyDetails,
     getAllFamilyDetails,
-    createEduDetails,
     getAllEduDetails,
-    createPreferences,
     getAllPreferences,
     createPersonalDetails,
     getAllPersonalDetails

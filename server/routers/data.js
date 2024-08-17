@@ -4,9 +4,7 @@ const express = require('express');
 const {
     createFamilyDetails,
     getAllFamilyDetails,
-    createEduDetails,
     getAllEduDetails,
-    createPreferences,
     getAllPreferences,
     createPersonalDetails,
     getAllPersonalDetails
@@ -15,15 +13,15 @@ const {
 const router = express.Router();
 
 const authMiddleware = require('../middlewares/authDataMiddleware');
+const { updateEduDetails } = require('../controllers/dataControllers');
 
+router.post('/edu_details', updateEduDetails);
 router.post('/personal_details', authMiddleware , createPersonalDetails);
 router.post('/family_details', authMiddleware, createFamilyDetails);
-router.post('/edu_details', authMiddleware, createEduDetails);
-router.post('/preferences', authMiddleware, createPreferences);
 
 
 
-router.get('/personal_details_get', getAllPersonalDetails);
+router.get('/personal_details_get/:userId', getAllPersonalDetails);
 router.get('/family_details_get', getAllFamilyDetails);
 router.get('/edu_details_get', getAllEduDetails);
 router.get('/preferences_get', getAllPreferences);

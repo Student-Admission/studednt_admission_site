@@ -16,44 +16,58 @@ const steps = [
   {
     label: 'Add personal details',
     description: 'Write each detail carefully',
-    component: (handleNext) => <PersonalDetails handleNext={handleNext} />,
+    component: (handleNext, setStepCompletion) => <PersonalDetails handleNext={handleNext} setStepCompletion={setStepCompletion} />,
   },
   {
     label: 'Add education details',
-    description: 'Write each detail carefully add',
-    component: (handleNext) => <EduDetails handleNext={handleNext} />,
+    description: 'Write each detail carefully',
+    component: (handleNext, setStepCompletion) => <EduDetails handleNext={handleNext} setStepCompletion={setStepCompletion} />,
   },
   {
     label: 'Add family details',
     description: 'Write each detail carefully',
-    component: (handleNext) => <FamilyDetails handleNext={handleNext} />,
+    component: (handleNext, setStepCompletion) => <FamilyDetails handleNext={handleNext} setStepCompletion={setStepCompletion} />,
   },
   {
     label: 'Add your Preferences',
     description: 'Carefully add the preferences of branch',
-    component: (handleNext) => <Preferences handleNext={handleNext} />,
+    component: (handleNext, setStepCompletion) => <Preferences handleNext={handleNext} setStepCompletion={setStepCompletion} />,
   },
 ];
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [stepCompletion, setStepCompletion] = React.useState(Array(steps.length).fill(false));
+  const [isFormLocked, setIsFormLocked] = React.useState(false);
   const navigate = useNavigate(); // Hook to navigate to different routes
 
   const handleNext = () => {
+    if (!stepCompletion[activeStep]) {
+      alert("Please complete the form before proceeding.");
+      return;
+    }
     if (activeStep === steps.length - 1) {
-      // If the last step is reached, navigate to /allocated_branch
+      // If the last step is reached, lock the form, set form completion in localStorage, and navigate to /allocated_branch
+      setIsFormLocked(true);
+      localStorage.setItem('formCompleted', 'true'); // Update localStorage
       navigate('/allocated_branch');
+      window.location.reload();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if (!isFormLocked) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
   };
 
   const handleReset = () => {
     setActiveStep(0);
+    setStepCompletion(Array(steps.length).fill(false));
+    setIsFormLocked(false);
+    localStorage.setItem('formCompleted', 'false'); // Reset form completion in localStorage
   };
 
   return (
@@ -79,11 +93,12 @@ export default function VerticalLinearStepper() {
                       variant="contained"
                       onClick={handleNext}
                       sx={{ mt: 1, mr: 2 }}
+                      disabled={!stepCompletion[activeStep]} // Disable if current step is not complete
                     >
                       {activeStep === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
                     <Button
-                      disabled={activeStep === 0}
+                      disabled={activeStep === 0 || isFormLocked} // Disable if on the first step or form is locked
                       onClick={handleBack}
                       sx={{ mt: 1, mr: 2 }}
                     >
@@ -105,7 +120,11 @@ export default function VerticalLinearStepper() {
         )}
       </Box>
       <Box sx={{ ml: 3, flexGrow: 1 }}>
-        {steps[activeStep].component(handleNext)}
+        {steps[activeStep].component(handleNext, (isComplete) => {
+          const newCompletion = [...stepCompletion];
+          newCompletion[activeStep] = isComplete;
+          setStepCompletion(newCompletion);
+        })}
       </Box>
     </Box>
   );
