@@ -26,8 +26,8 @@ async function fetchStudentData() {
                 preference_2: eduDetail.preference_2 || "",
                 preference_3: eduDetail.preference_3 || "",
                 preference_4: eduDetail.preference_4 || "",
-                assigned_preference: 0, // 0 means no branch assigned
-                assigned_branch: "",
+                allotted_preference: 0, // 0 means no branch assigned
+                allotted_branch: "",
                 rank: rank // Use the maximum of rank_1 and rank_2
             };
         });
@@ -46,29 +46,35 @@ function assignBranches() {
     let available_seats_CCE = seats_per_branch;
     let available_seats_MECH = seats_per_branch;
 
+   studentsCache.forEach(student => {
     for (let i = 1; i <= 4; ++i) {
-        studentsCache.forEach(student => {
-            if (student.assigned_preference === 0 || i < student.assigned_preference) {
-                let preference = student[`preference_${i}`];
-                if (available_seats[preference] > 0) {
-                    if (student.assigned_branch) {
-                        available_seats[student.assigned_branch]++;
-                    }
+        let preference = student[`preference_${i}`];
 
-                    student.assigned_preference = i;
-                    student.assigned_branch = preference;
-                    available_seats[preference]--;
+        // Skip to the next student if the current preference is an empty string
+        if (!preference) break;
+
+        if (student.allotted_preference === 0 || i < student.allotted_preference) {
+            if (available_seats[preference] > 0) {
+                if (student.allotted_branch) {
+                    available_seats[student.allotted_branch]++;
                 }
+
+                student.allotted_preference = i;
+                student.allotted_branch = preference;
+                available_seats[preference]--;
+                break; // Stop further processing once a branch is assigned
             }
-        });
+        }
     }
+});
+
 }
 
 async function updateStudents() {
     for (let student of studentsCache) {
         await PersonalDetails.updateOne({ userId: student.userId }, {
-            assigned_preference: student.assigned_preference,
-            assigned_branch: student.assigned_branch
+            allotted_preference: student.allotted_preference,
+            alloted_branch: student.allotted_branch
         });
     }
 }
