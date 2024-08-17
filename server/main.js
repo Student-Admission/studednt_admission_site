@@ -56,7 +56,7 @@ function assignBranches() {
             // Skip to the next student if the current preference is an empty string
             if (!preference) break;
 
-            // if (student.allotted_preference === 0 || i < student.allotted_preference) {
+            if (student.allotted_preference === 0 || i < student.allotted_preference) {
                 if (available_seats[preference] > 0) {
                     if (student.allotted_branch) {
                         available_seats[student.allotted_branch]++;
@@ -68,7 +68,7 @@ function assignBranches() {
                     console.log("\n");
                     available_seats[preference]--;
                     break; // Stop further processing once a branch is assigned
-                // }
+                }
             }
         }
     });
