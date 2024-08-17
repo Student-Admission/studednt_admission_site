@@ -1,8 +1,8 @@
 let studentsCache = null; // Global variable to store the student array
 const mongoose = require('mongoose');
 
-const EduDetails = require('./path/to/EduDetailsModel');
-const PersonalDetails = require('./path/to/PersonalDetailsModel');
+const EduDetails = require('./model/EduDetails');
+const PersonalDetails = require('./model/PersonalDetails');
 
 async function fetchStudentData() {
     if (!studentsCache) {
