@@ -1,8 +1,8 @@
+require('dotenv').config();
 let studentsCache = null; // Global variable to store the student array
 const mongoose = require('mongoose');
-
-const EduDetails = require('./models/EduDetails');
-const PersonalDetails = require('./models/PersonalDetails');
+const EduDetails = require('./models/EduDetails.js');
+const PersonalDetails = require('./models/PersonalDetails.js');
 
 async function fetchStudentData() {
     if (!studentsCache) {
@@ -40,34 +40,35 @@ async function fetchStudentData() {
 }
 
 function assignBranches() {
-    const seats_per_branch = 20;
-    let available_seats_CSE = seats_per_branch;
-    let available_seats_ECE = seats_per_branch;
-    let available_seats_CCE = seats_per_branch;
-    let available_seats_MECH = seats_per_branch;
+    const seats_per_branch = 2;
+    let available_seats = {
+        CSE: seats_per_branch,
+        ECE: seats_per_branch,
+        CCE: seats_per_branch,
+        MECH: seats_per_branch
+    };
 
-   studentsCache.forEach(student => {
-    for (let i = 1; i <= 4; ++i) {
-        let preference = student[`preference_${i}`];
+    studentsCache.forEach(student => {
+        for (let i = 1; i <= 4; ++i) {
+            let preference = student[`preference_${i}`];
 
-        // Skip to the next student if the current preference is an empty string
-        if (!preference) break;
+            // Skip to the next student if the current preference is an empty string
+            if (!preference) break;
 
-        if (student.allotted_preference === 0 || i < student.allotted_preference) {
-            if (available_seats[preference] > 0) {
-                if (student.allotted_branch) {
-                    available_seats[student.allotted_branch]++;
+            if (student.allotted_preference === 0 || i < student.allotted_preference) {
+                if (available_seats[preference] > 0) {
+                    if (student.allotted_branch) {
+                        available_seats[student.allotted_branch]++;
+                    }
+
+                    student.allotted_preference = i;
+                    student.allotted_branch = preference;
+                    available_seats[preference]--;
+                    break; // Stop further processing once a branch is assigned
                 }
-
-                student.allotted_preference = i;
-                student.allotted_branch = preference;
-                available_seats[preference]--;
-                break; // Stop further processing once a branch is assigned
             }
         }
-    }
-});
-
+    });
 }
 
 async function updateStudents() {
@@ -80,7 +81,10 @@ async function updateStudents() {
 }
 
 async function main() {
-    await mongoose.connect('', { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
 
     await fetchStudentData(); // Only fetch and sort data if not already done
 
