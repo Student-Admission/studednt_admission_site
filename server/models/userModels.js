@@ -1,20 +1,27 @@
 const mongoose = require('mongoose');
+
+// Define the user schema
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [ true , "name is required"]
+        required: [true, "Name is required"]
     },
     email: {
         type: String,
-        required: [ true , "email is required"],
-        unique: true
+        required: [true, "Email is required"],
+        unique: true,
+        lowercase: true, // Normalize email to lowercase
+        trim: true       // Remove leading/trailing whitespace
     },
     password: {
         type: String,
-        required: [ true , "password is required"]
+        required: [true, "Password is required"]
     }
-    
-})
-const userModel = new mongoose.model('User', userSchema);
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt
+});
 
-module.exports = userModel;
+// Create and export the user model
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
